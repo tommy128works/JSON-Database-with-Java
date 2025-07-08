@@ -34,7 +34,33 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.example.App'
+//    mainClass = 'org.example.App'
+    mainClass = 'server.Main'
+}
+
+tasks.register('runServer', JavaExec) {
+    group = 'application'
+    description = 'Runs the main method from server.Main'
+    mainClass.set('server.Main')
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.register('runClient', JavaExec) {
+    group = 'application'
+    description = 'Runs the main method from client.Main'
+    mainClass.set('client.Main')
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+tasks.register('runBoth') {
+    group = 'application'
+    description = 'Runs the server main method then the client main method'
+    dependsOn 'runServer', 'runClient'
+}
+
+tasks.named('runBoth') {
+    dependsOn 'runServer', 'runClient'
+    tasks.runClient.mustRunAfter tasks.runServer
 }
 
 tasks.named('test') {
