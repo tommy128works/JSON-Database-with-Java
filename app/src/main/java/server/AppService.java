@@ -32,7 +32,7 @@ public class AppService {
 
     private String setCommand(String[] words) {
         int index = Integer.parseInt(words[1]);
-        if (index > 1000) {
+        if (index > 1000 || index < 1) {
             return "ERROR";
         } else {
             String[] textSlice = Arrays.copyOfRange(words, 2, words.length);
