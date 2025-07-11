@@ -63,6 +63,10 @@ tasks.named('runBoth') {
     tasks.runClient.mustRunAfter tasks.runServer
 }
 
+tasks.withType(JavaExec).configureEach {
+    standardInput = System.in
+}
+
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
