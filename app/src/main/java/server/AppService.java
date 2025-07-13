@@ -21,7 +21,7 @@ public class AppService {
             case "set":
                 return this.setCommand(words);
             case "get":
-                break;
+                return this.getCommand(words);
             case "delete":
                 break;
             default:
@@ -41,6 +41,15 @@ public class AppService {
 //            for testing
 //            System.out.println(this.db[index - 1]);
             return "OK";
+        }
+    }
+
+    private String getCommand(String[] words) {
+        int index = Integer.parseInt(words[1]);
+        if (index > 1000 || index < 1) {
+            return "ERROR";
+        } else {
+            return this.db[index - 1];
         }
     }
 }
