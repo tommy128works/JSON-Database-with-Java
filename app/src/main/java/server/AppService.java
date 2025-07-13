@@ -23,11 +23,10 @@ public class AppService {
             case "get":
                 return this.getCommand(words);
             case "delete":
-                break;
+                return this.deleteCommand(words);
             default:
                 return "Invalid command";
         }
-        return null;
     }
 
     private String setCommand(String[] words) {
@@ -46,10 +45,20 @@ public class AppService {
 
     private String getCommand(String[] words) {
         int index = Integer.parseInt(words[1]);
-        if (index > 1000 || index < 1) {
+        if (index > 1000 || index < 1 || this.db[index - 1] == null) {
             return "ERROR";
         } else {
             return this.db[index - 1];
+        }
+    }
+
+    private String deleteCommand(String[] words) {
+        int index = Integer.parseInt(words[1]);
+        if (index > 1000 || index < 1) {
+            return "ERROR";
+        } else {
+            this.db[index - 1] = null;
+            return "OK";
         }
     }
 }
