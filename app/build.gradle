@@ -52,16 +52,40 @@ tasks.register('runClient', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
-tasks.register('runBoth') {
-    group = 'application'
-    description = 'Runs the server main method then the client main method'
-    dependsOn 'runServer', 'runClient'
-}
+// Runs server and client sequentially
+//tasks.register('runBoth') {
+//    group = 'application'
+//    description = 'Runs the server main method then the client main method'
+//    dependsOn 'runServer', 'runClient'
+//}
+//tasks.named('runBoth') {
+//    dependsOn 'runServer', 'runClient'
+//    tasks.runClient.mustRunAfter tasks.runServer
+//}
 
-tasks.named('runBoth') {
-    dependsOn 'runServer', 'runClient'
-    tasks.runClient.mustRunAfter tasks.runServer
-}
+// this runs both simultaneously, but doesn't allow console input
+//tasks.register('runBoth') {
+//    dependsOn 'classes'
+//    group = 'application'
+//    description = 'Runs both server and client simultaneously'
+//
+//    def classpath = sourceSets.main.runtimeClasspath
+//    def mainClass1 = 'server.Main'
+//    def mainClass2 = 'client.Main'
+//
+//    doLast {
+//        def t1 = Thread.start {
+//            ['java', '-cp', classpath.asPath, mainClass1].execute().waitForProcessOutput(System.out, System.err)
+//        }
+//
+//        def t2 = Thread.start {
+//            ['java', '-cp', classpath.asPath, mainClass2].execute().waitForProcessOutput(System.out, System.err)
+//        }
+//
+//        t1.join()
+//        t2.join()
+//    }
+//}
 
 tasks.withType(JavaExec).configureEach {
     standardInput = System.in
