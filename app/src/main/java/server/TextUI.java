@@ -14,9 +14,11 @@ public class TextUI {
     }
 
     public void start() {
-        while (this.isRunning) {
-            this.receiveCommand();
-        }
+        System.out.println("Server started!");
+
+//        while (this.isRunning) {
+//            this.receiveCommand();
+//        }
     }
 
     private void receiveCommand() {

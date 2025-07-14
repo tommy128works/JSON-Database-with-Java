@@ -1,12 +1,56 @@
 package server;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Arrays;
 
 public class AppService {
     private final String[] db;
 
+    private String address;
+    private int port;
+    private ServerSocket server;
+    private Socket socket;
+    private DataInputStream input;
+    private DataOutputStream output;
+
     public AppService() {
         this.db = new String[1000];
+
+        try {
+            this.address = "127.0.0.1";
+            this.port = 1111;
+            this.server = new ServerSocket(port, 50, InetAddress.getByName(address));
+            this.socket = server.accept();
+            this.input = new DataInputStream(socket.getInputStream());
+            this.output  = new DataOutputStream(socket.getOutputStream());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+//            e.printStackTrace();
+        }
+
+
+    }
+
+    public void testSocket() {
+        String send = "Message from server";
+
+        try {
+            output.writeUTF(send);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        try {
+            String receive = input.readUTF();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+
     }
 
     public String processCommand(String command) {
@@ -61,4 +105,6 @@ public class AppService {
             return "OK";
         }
     }
+
+
 }
