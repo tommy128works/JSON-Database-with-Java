@@ -43,6 +43,9 @@ tasks.register('runServer', JavaExec) {
     description = 'Runs the main method from server.Main'
     mainClass.set('server.Main')
     classpath = sourceSets.main.runtimeClasspath
+
+//    def port = project.hasProperty('port') ? project.port : '8080'
+//    args = [port]
 }
 
 tasks.register('runClient', JavaExec) {
@@ -50,6 +53,9 @@ tasks.register('runClient', JavaExec) {
     description = 'Runs the main method from client.Main'
     mainClass.set('client.Main')
     classpath = sourceSets.main.runtimeClasspath
+
+//    def port = project.hasProperty('port') ? project.port : '8080'
+//    args = [port]
 }
 
 // Runs server and client sequentially

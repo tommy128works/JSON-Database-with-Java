@@ -1,54 +1,38 @@
 package server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 import java.util.Arrays;
 
 public class AppService {
     private final String[] db;
 
-    private String address;
-    private int port;
-    private ServerSocket server;
-    private Socket socket;
-    private DataInputStream input;
-    private DataOutputStream output;
+    private static final int PORT = 34522;
 
     public AppService() {
         this.db = new String[1000];
 
-        try {
-            this.address = "127.0.0.1";
-            this.port = 1111;
-            this.server = new ServerSocket(port, 50, InetAddress.getByName(address));
-            this.socket = server.accept();
-            this.input = new DataInputStream(socket.getInputStream());
-            this.output  = new DataOutputStream(socket.getOutputStream());
-        } catch (Exception e) {
+        try (ServerSocket server = new ServerSocket(PORT)) {
+            while (true) {
+                try (
+                        Socket socket = server.accept(); // accept a new client
+                        DataInputStream input = new DataInputStream(socket.getInputStream());
+                        DataOutputStream output = new DataOutputStream(socket.getOutputStream())
+                ) {
+                    String msg = input.readUTF(); // read a message from the client
+                    output.writeUTF(msg + 1); // resend it to the client
+                }
+            }
+        } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
-//            e.printStackTrace();
+            e.printStackTrace();
         }
 
 
     }
 
     public void testSocket() {
-        String send = "Message from server";
 
-        try {
-            output.writeUTF(send);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        try {
-            String receive = input.readUTF();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
 
 
     }

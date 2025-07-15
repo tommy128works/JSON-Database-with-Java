@@ -1,7 +1,5 @@
 package client;
 
-import server.AppService;
-
 import java.util.Scanner;
 
 public class TextUI {

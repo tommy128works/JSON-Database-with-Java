@@ -1,47 +1,32 @@
 package client;
 
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.net.InetAddress;
+import java.io.*;
 import java.net.Socket;
 
 public class AppService {
-    private String address;
-    private int port;
-    private Socket socket;
-    private DataInputStream input;
-    private DataOutputStream output;
+    private static final String SERVER_ADDRESS = "127.0.0.1";
+    private static final int SERVER_PORT = 34522;
 
     public AppService() {
-        try {
-            this.address = "127.0.0.1";
-            this.port = 2222;
-            this.socket = new Socket(InetAddress.getByName(address), port);
-            this.input = new DataInputStream(socket.getInputStream());
-            this.output = new DataOutputStream(socket.getOutputStream());
+        try (
+                Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+                DataInputStream input = new DataInputStream(socket.getInputStream());
+                DataOutputStream output  = new DataOutputStream(socket.getOutputStream())
+        ) {
+            String msg = "Message from client";
+            output.writeUTF(msg); // send a message to the server
+            String receivedMsg = input.readUTF(); // read the reply from the server
 
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-//            e.printStackTrace();
+            System.out.println("Received from the server: " + receivedMsg);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
 
     public void testSocket() {
-        String send = "Message from client";
 
-        try {
-            output.writeUTF(send);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        try {
-            String receive = input.readUTF();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
 
     }
 
